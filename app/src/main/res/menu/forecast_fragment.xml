@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- showAsAction attribute should be set to something other than 'never' otherwise this will not
+    show up on the menu item -->
     <item android:id="@+id/action_refresh"
         android:title="@string/action_refresh"
-        android:showAsAction="never"/>
+        android:visible="true"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

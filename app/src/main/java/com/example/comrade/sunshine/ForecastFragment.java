@@ -6,6 +6,9 @@ import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +33,39 @@ public class ForecastFragment extends Fragment {
     // Constuctor
     public ForecastFragment() {
 
+    }
+
+    /*This method runs before onCreateView
+     * setting here options menu
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // this line enables callback for menu item methods.
+        setHasOptionsMenu(true);
+    }
+
+    /* Set the layout for the option menu
+     * on create of option menu
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // super.onCreateOptionsMenu(menu, inflater);
+        // menu.clear();
+        inflater.inflate(R.menu.forecast_fragment, menu);
+    }
+
+    /* action on item selected in menu */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        // when action is refresh call AsyncTask background job.
+        if (id == R.id.action_refresh) {
+            FetchWeatherTask weatherTask = new FetchWeatherTask();
+            weatherTask.execute();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -73,7 +110,7 @@ public class ForecastFragment extends Fragment {
         public class FetchWeatherTask extends AsyncTask<URL, Integer, Long> {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
-            
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -121,9 +158,11 @@ public class ForecastFragment extends Fragment {
                     // to parse it.
                     return null;
                 } finally{
+                    // close the connection
                     if (urlConnection != null) {
                         urlConnection.disconnect();
                     }
+                    // close the reader
                     if (reader != null) {
                         try {
                             reader.close();
