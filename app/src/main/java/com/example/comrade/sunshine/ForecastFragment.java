@@ -1,5 +1,6 @@
 package com.example.comrade.sunshine;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,8 +110,28 @@ public class ForecastFragment extends Fragment {
                 R.id.listview_forecast);
         // Binding the adapter to listView
         listView.setAdapter(mForecastAdapter);
+        // set click listener on the listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /* Context of the application can be fetched using the current activity
+                 * but since we are in a fragment we have to first fetch its parent activity then
+                 * it context.
+                 * Another approach can be to define a static var(type: Context) in application class onCreate method
+                 * that way we can access it from anywhere in the application.
+                 */
+                Context context = getActivity().getApplicationContext();
+                CharSequence text = mForecastAdapter.getItem(position);
+                int duration = Toast.LENGTH_SHORT;
+                // We can also chain makeText and show methods.
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
         return rootView;
     }
+
+
 
     /* This is subclass to ForecastFragment.java it handles fetching data from the api
      * openweathermaps api. run AsyncTask worker.
@@ -188,7 +211,6 @@ public class ForecastFragment extends Fragment {
                     Date date = new Date((long)dt*1000);
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                     day = df.format(date);
-                    Log.v("Ashish", "Day is " + day);
                     // description is in a child array called "weather", which is 1 element long.
                     JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                     description = weatherObject.getString(OWM_DESCRIPTION);
