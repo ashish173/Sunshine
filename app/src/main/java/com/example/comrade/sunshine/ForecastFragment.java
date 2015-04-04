@@ -86,18 +86,8 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        String[] forecastArray = {
-                "Today - Sunny - 88/63",
-                "Tomorrow - Foggy - 70/40",
-                "Weds - Cloudy - 75/35",
-                "Thursday - Rainy - 79/45",
-                "Friday - Stormy - 65/35",
-                "Saturday - Cool - 76/45",
-                "Sunday - Dark cloudy - 34/12",
-                "Fictional day - Not known - 56/24",
-                "Finctional day 2 - not known - 234/34"
-        };
+        // Initialize with no data in list.
+        String[] forecastArray = {};
 
         List<String> weekForecast = new ArrayList<String>(
                 Arrays.asList(forecastArray));
@@ -195,8 +185,10 @@ public class ForecastFragment extends Fragment {
                     // this returns unix timestamp.
                     long dt = dayForecast.getLong("dt");
                     // multiply by 1000 as date constructor expects milliseconds
-                    day = new Date((long)dt*1000).toString();
-
+                    Date date = new Date((long)dt*1000);
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    day = df.format(date);
+                    Log.v("Ashish", "Day is " + day);
                     // description is in a child array called "weather", which is 1 element long.
                     JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
                     description = weatherObject.getString(OWM_DESCRIPTION);
