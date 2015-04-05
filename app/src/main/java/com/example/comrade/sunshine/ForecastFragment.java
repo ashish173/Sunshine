@@ -1,6 +1,7 @@
 package com.example.comrade.sunshine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -121,11 +122,27 @@ public class ForecastFragment extends Fragment {
                  * that way we can access it from anywhere in the application.
                  */
                 Context context = getActivity().getApplicationContext();
-                CharSequence text = mForecastAdapter.getItem(position);
-                int duration = Toast.LENGTH_SHORT;
-                // We can also chain makeText and show methods.
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                String forecast = mForecastAdapter.getItem(position);
+              /* Now we use and intent to launch the detailActivity
+               * int duration = Toast.LENGTH_SHORT;
+               * // We can also chain makeText and show methods.
+               * Toast toast = Toast.makeText(context, text, duration);
+               * toast.show();
+               */
+                // Intent constructor takes in application context since in fragment here
+                // so call to getActivity() to get the current context.
+                // we also provide the name of the class which should be called with
+                // this intent
+                Intent detailIntent = new Intent(
+                        getActivity().getApplicationContext(),
+                        DetailActivity.class)
+                        // Intent.EXTRA_TEXT is a key which is used to read the data in the
+                        // receiving activity its doesn't matter much as long as we use the
+                        // same key to read the values there.
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                // Starting the activity
+                startActivity(detailIntent);
+
             }
         });
         return rootView;
