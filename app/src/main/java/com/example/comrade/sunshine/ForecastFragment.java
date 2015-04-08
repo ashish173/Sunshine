@@ -2,9 +2,11 @@ package com.example.comrade.sunshine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -80,7 +82,14 @@ public class ForecastFragment extends Fragment {
         // when action is refresh call AsyncTask background job.
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("411015");
+            /* Fetch default value of location from shared preferences. */
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location = prefs.getString(
+                    getString(R.string.pref_location_key),  // if value is set
+                    getString(R.string.pref_location_default)  // default value
+            );
+
+            weatherTask.execute(location);
             return true;
         }
         return super.onOptionsItemSelected(item);

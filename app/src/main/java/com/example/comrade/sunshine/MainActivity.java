@@ -1,6 +1,7 @@
 package com.example.comrade.sunshine;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -59,9 +60,11 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+
             return true;
         }
-
+        // This handles the cases when none of if conditions are true.
         return super.onOptionsItemSelected(item);
     }
 
