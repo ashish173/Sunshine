@@ -75,24 +75,43 @@ public class ForecastFragment extends Fragment {
         inflater.inflate(R.menu.forecast_fragment, menu);
     }
 
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        // Fetch default value of location from shared preferences.
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(
+            getString(R.string.pref_location_key),     // if value is set
+            getString(R.string.pref_location_default)  // default value
+        );
+        weatherTask.execute(location);
+    }
     /* action on item selected in menu */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         // when action is refresh call AsyncTask background job.
         if (id == R.id.action_refresh) {
+            updateWeather();
+            /* // Removed code from Refresh action to a method so
+               // that it can be called from onStart of activity too.
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            /* Fetch default value of location from shared preferences. */
+            // Fetch default value of location from shared preferences.
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
             String location = prefs.getString(
                     getString(R.string.pref_location_key),  // if value is set
                     getString(R.string.pref_location_default)  // default value
             );
-
-            weatherTask.execute(location);
+            weatherTask.execute(location);*/
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        // call updateWeather to update the weather when we see the first landing screen
+        updateWeather();
     }
 
     @Override
@@ -100,21 +119,19 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         // Initialize with no data in list.
-        String[] forecastArray = {};
-
-        List<String> weekForecast = new ArrayList<String>(
-                Arrays.asList(forecastArray));
 
         /* Feed the adapter */
-        mForecastAdapter = new ArrayAdapter<String>(
-                // the current context, fragments parent activity
-                getActivity(),
-                // Id of item list layout
-                R.layout.list_item_forecast,
-                // Id of item list textview to populate
-                R.id.list_item_forecast_textview,
-                // dummy data
-                weekForecast);
+        mForecastAdapter =
+                new ArrayAdapter<String>(
+                    // the current context, fragments parent activity
+                    getActivity(),
+                    // Id of item list layout
+                    R.layout.list_item_forecast,
+                    // Id of item list textview to populate
+                    R.id.list_item_forecast_textview,
+                    // dummy data
+                    new ArrayList<String>());
+
         // Find id of listview
         ListView listView = (ListView) rootView.findViewById(
                 R.id.listview_forecast);
