@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="listentries">
+        <item>Celcius</item>
+        <item>Fahrenheight</item>
+    </string-array>
+    <string-array name="listvalues">
+        <item>cel</item>
+        <item>fah</item>
+    </string-array>
+</resources>

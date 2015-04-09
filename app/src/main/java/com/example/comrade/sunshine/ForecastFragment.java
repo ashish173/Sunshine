@@ -50,6 +50,7 @@ public class ForecastFragment extends Fragment {
     /* Define the adapter which will take data and populate the list view */
     private ArrayAdapter<String> mForecastAdapter;
 
+    public static String unit = null;
     // Constuctor
     public ForecastFragment() {
 
@@ -83,6 +84,10 @@ public class ForecastFragment extends Fragment {
             getString(R.string.pref_location_key),     // if value is set
             getString(R.string.pref_location_default)  // default value
         );
+        unit = prefs.getString(
+          getString(R.string.pref_unit_key),
+          getString(R.string.pref_unit_default)
+        );
         weatherTask.execute(location);
     }
     /* action on item selected in menu */
@@ -92,16 +97,6 @@ public class ForecastFragment extends Fragment {
         // when action is refresh call AsyncTask background job.
         if (id == R.id.action_refresh) {
             updateWeather();
-            /* // Removed code from Refresh action to a method so
-               // that it can be called from onStart of activity too.
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            // Fetch default value of location from shared preferences.
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String location = prefs.getString(
-                    getString(R.string.pref_location_key),  // if value is set
-                    getString(R.string.pref_location_default)  // default value
-            );
-            weatherTask.execute(location);*/
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -174,8 +169,6 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-
-
     /* This is subclass to ForecastFragment.java it handles fetching data from the api
      * openweathermaps api. run AsyncTask worker.
      */
@@ -210,8 +203,20 @@ public class ForecastFragment extends Fragment {
             */
             private String formatHighLows(double high, double low) {
                 // For presentation, assume the user doesn't care about tenths of a degree.
-                long roundedHigh = Math.round(high);
-                long roundedLow = Math.round(low);
+                long roundedHigh, roundedLow;
+                if(unit.equals("cel")) {
+                    roundedHigh = Math.round(high);
+                    roundedLow = Math.round(low);
+                }else if(unit.equals("fah")){
+                    roundedHigh = Math.round(high) * 5;
+                    roundedLow = Math.round(low) * 5;
+                }else{
+                    // this case is not a possibility but we get an
+                    // uninitialized variable error since using if and else if
+                    // above.
+                    roundedHigh = 0;
+                    roundedLow = 0;
+                }
 
                 String highLowStr = roundedHigh + "/" + roundedLow;
                 return highLowStr;

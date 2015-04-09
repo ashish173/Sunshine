@@ -41,11 +41,9 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         setupSimplePreferencesScreen();
     }
 
@@ -93,6 +91,10 @@ public class SettingsActivity extends PreferenceActivity {
         // bind preference summary to location preference.
         // R.string -> its a string value.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        // For conversion of units ListPreference for selection of
+        // units
+        addPreferencesFromResource(R.xml.pref_unit);
+        bindPreferenceSummaryToValue(findPreference("unit"));
     }
 
     /**

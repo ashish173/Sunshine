@@ -7,4 +7,8 @@
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key" translatable="false">location</string>   <!-- key that stores location_key in shared prefs -->
     <string name="pref_location_default" translatable="false">411021</string> <!-- Initialize the location here -->
+    <string name="pref_unit_default" translatable="false">cel</string>
+    <string name="pref_unit_key" translatable="false">unit</string>
+    <string name="pref_unit_label" translatable="false">Unit</string>
+    <string name="pref_unit_summary" translatable="false">Select temp unit</string>
 </resources>
