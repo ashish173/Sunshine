@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--This could have easily gone in the pref_general1.xml
+        that way we don't have to specify a new addPreferencesFromResource(R.xml.pref_unit);
+
+    -->
     <ListPreference
         android:key="@string/pref_unit_key"
         android:summary="@string/pref_unit_summary"

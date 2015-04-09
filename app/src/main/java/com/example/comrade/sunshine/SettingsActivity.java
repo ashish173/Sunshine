@@ -90,11 +90,13 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_general1);
         // bind preference summary to location preference.
         // R.string -> its a string value.
+        // this is the value which will be used te fetch data from
+        // the sharedPrefge
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         // For conversion of units ListPreference for selection of
         // units
         addPreferencesFromResource(R.xml.pref_unit);
-        bindPreferenceSummaryToValue(findPreference("unit"));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_unit_key)));
     }
 
     /**

@@ -80,6 +80,10 @@ public class ForecastFragment extends Fragment {
         FetchWeatherTask weatherTask = new FetchWeatherTask();
         // Fetch default value of location from shared preferences.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        /* Bound in the code in SettingsActivity
+         * bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+         * Same is used in code below to get the value from SPs.
+         */
         String location = prefs.getString(
             getString(R.string.pref_location_key),     // if value is set
             getString(R.string.pref_location_default)  // default value
@@ -208,8 +212,8 @@ public class ForecastFragment extends Fragment {
                     roundedHigh = Math.round(high);
                     roundedLow = Math.round(low);
                 }else if(unit.equals("fah")){
-                    roundedHigh = Math.round(high) * 5;
-                    roundedLow = Math.round(low) * 5;
+                    roundedHigh = Math.round((high * 1.8) + 32);
+                    roundedLow = Math.round((low * 1.8) + 32);
                 }else{
                     // this case is not a possibility but we get an
                     // uninitialized variable error since using if and else if
