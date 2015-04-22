@@ -81,6 +81,7 @@ public class DetailActivity extends ActionBarActivity {
             MenuItem menuItem = menu.findItem(R.id.action_share);
 
             // Get the provider
+            // http://stackoverflow.com/questions/19118051/unable-to-cast-action-provider-to-share-action-provider
             ShareActionProvider mShareActionProvider =
                     (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -41,12 +42,43 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("Ashish", "Called onCreate() method");
         setContentView(layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(id.container, new ForecastFragment())
                     .commit();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("Ashish", "Called onStart() method");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("Ashish", "Called onStop() method");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("Ashish", "Called onResume() method");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("Ashish", "Called onPause() method");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("Ashish", "Called onDestroy() method");
     }
 
     @Override
